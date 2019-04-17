@@ -1,10 +1,10 @@
 console.log("Running")
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Leaderboard from './main';
+import App from './App';
 
 ReactDOM.render(
-  <Leaderboard /> ,
-  document.getElementById('leaderboard'));
+  <App /> ,
+  document.getElementById('app-container'));
 
 module.hot.accept();

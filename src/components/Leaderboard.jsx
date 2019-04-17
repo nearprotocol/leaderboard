@@ -1,27 +1,27 @@
 import React from 'react';
-import './style.scss'
+import '../style.scss'
 
 const DATA = {
   title: 'Leaderboard',
   people: [{
       name: 'Eugene The Dream',
       image: 'http://lorempixel.com/100/100',
-      score: 9001
+      score: 8001
     },
     {
       name: 'Bad Boi Vlad',
       image: 'http://lorempixel.com/120/120',
-      score: 2050
+      score: 20051
     },
     {
       name: 'Jane The Brain',
       image: 'http://lorempixel.com/110/110',
-      score: 9000
+      score: 3000
     },
     {
-      name: 'Bowen the... wtf!',
+      name: 'Bowen.sh!',
       image: 'http://lorempixel.com/105/105',
-      score: 2103
+      score: 3103
     },
     {
       name: 'Detective Misha',
@@ -31,16 +31,53 @@ const DATA = {
   ]
 }
 
+const firstNames = [
+  "Bowen",
+  "Detective",
+  "Eugene",
+  "Jane",
+  "Berry"
+];
+const lastNames = [
+  " Misha",
+  " Dave",
+  " The Dream",
+  " The Train",
+  " The What the fucccccccsa",
+  ".sh"
+]
+
+function generateName() {
+  let first = firstNames[Math.random() * firstNames.length | 0];
+  let last = lastNames[Math.random() * lastNames.length | 0];
+  return first + last;
+}
+
+let peeps = [...Array(20).keys()].map(x=> {
+  return {
+    name: generateName(),
+    image: `http://lorempixel.com/10${x}/10${x}`,
+    score: Math.floor(Math.random() * 10000)
+  }
+})
+// console.log(peeps);
+
+DATA.people = DATA.people.concat(peeps);
+console.log(DATA)
+
 export default class Leaderboard extends React.Component {
   constructor () {
     super();
-    this.state = DATA;
+    
   }
   render () {
-    return ( 
-      <div className = "Leaderboard" >
-        <Title title = {this.state.title}/> 
-        <List people = {this.state.people}/> 
+    this.state = DATA;
+    return (
+      <div className="CardContainer">
+        <div className="Leaderboard" >
+          <Title title = {this.state.title}/> 
+          <List people = {this.state.people}/> 
+        </div>
       </div>
     );
   }
@@ -66,13 +103,12 @@ class List extends React.Component {
   }
   render() {
     let peopleList = this.sortArray();
-    let people = peopleList.map(function (person, i) {
+    let people = peopleList.map((person, i) => {
       return <Person 
-        key = {person.name}
-        name = {person.name}
-        score = {person.score}
-        image = {person.image}/>
-    });
+              key = {person.name + i}
+              name = {person.name}
+              score = {person.score}
+              image = {person.image}/>});
     return ( 
       <ul> 
         {people}

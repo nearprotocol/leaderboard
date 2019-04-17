@@ -1,25 +1,62 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+
+// Variables
+$near-grey: rgb(58,62,66);
+$dark-grey: #121212;
+$light-grey: #EEE;
+$white: #FFF;
 
 // Styles
 body {
-  background: #EEEEEE;
+  background: $light-grey;
+  margin: 0;
 }
 
-#leaderboard {
+* {
+  font-family: 'Source Sans Pro','Roboto Mono',monospace;
+}
+
+.app-container,
+#app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+.Nav {
+  background:$white;
+  box-shadow: 0 5px 10px -5px rgba(black, .2);  
+  ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    list-style-type: none;
+    overflow: auto;
+    li {
+      margin: 20px;
+    }
+  }
+}
+
+.CardContainer {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
 }
 
 .Leaderboard {
-  font-family: 'Roboto Mono', monospace;
-  width: 400px;
-  background: #FFFFFF;
+  background: $white;
   box-shadow: 0 5px 10px -5px rgba(black, .2);
-
+  max-width: 50vw;
+  max-height: 70vh;
+  min-width: 550px;
+  
   .Title {
     padding: 20px;
-    background: #121212;
+    background: $dark-grey;
     color: white;
     font-weight: 700;
     text-transform: uppercase;
@@ -28,6 +65,8 @@ body {
 
   ul {
     padding: 20px;
+    overflow: auto;
+    max-height: 53vh;
   }
 
   .Person {
@@ -65,5 +104,4 @@ body {
       font-weight: 700;
     }
   }
-
 }
