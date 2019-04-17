@@ -14,6 +14,7 @@ body {
 
 * {
   font-family: 'Source Sans Pro','Roboto Mono',monospace;
+  font-size: calc(12px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
 }
 
 .app-container,
@@ -47,7 +48,7 @@ body {
   width: 100%;
 }
 
-.Leaderboard {
+.Card {
   background: $white;
   box-shadow: 0 5px 10px -5px rgba(black, .2);
   max-width: 50vw;
@@ -64,6 +65,7 @@ body {
   }
 
   ul {
+    list-style: none;
     padding: 20px;
     overflow: auto;
     max-height: 53vh;
@@ -102,6 +104,26 @@ body {
     .Score {
       margin-left: auto;
       font-weight: 700;
+    }
+  }
+}
+@media only screen and (max-device-width: 1000px) and (-webkit-min-device-pixel-ratio: 2) {
+  .CardContainer {
+    width: 100vw;
+    height: 100vh;
+    // override previous
+    max-width: 100%;
+    max-height: 100%;
+    justify-content: normal;
+    .Card {
+      height: 100%;
+      width: 100%; 
+      // override previous
+      min-width: 100%;
+      max-height: 100%;
+      ul {
+        max-height: 67vh;
+      }
     }
   }
 }

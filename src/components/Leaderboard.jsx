@@ -1,32 +1,12 @@
 import React from 'react';
-import '../style.scss'
-
+import Card from './Card';
 const DATA = {
   title: 'Leaderboard',
-  people: [{
-      name: 'Eugene The Dream',
-      image: 'http://lorempixel.com/100/100',
-      score: 8001
-    },
+  people: [
     {
       name: 'Bad Boi Vlad',
       image: 'http://lorempixel.com/120/120',
       score: 20051
-    },
-    {
-      name: 'Jane The Brain',
-      image: 'http://lorempixel.com/110/110',
-      score: 3000
-    },
-    {
-      name: 'Bowen.sh!',
-      image: 'http://lorempixel.com/105/105',
-      score: 3103
-    },
-    {
-      name: 'Detective Misha',
-      image: 'http://lorempixel.com/101/101',
-      score: 2019
     }
   ]
 }
@@ -74,18 +54,10 @@ export default class Leaderboard extends React.Component {
     this.state = DATA;
     return (
       <div className="CardContainer">
-        <div className="Leaderboard" >
-          <Title title = {this.state.title}/> 
+        <Card cardTitle={this.state.title}>
           <List people = {this.state.people}/> 
-        </div>
+        </Card>
       </div>
-    );
-  }
-}
-
-class Title extends React.Component {
-  render () {
-    return ( <div className = "Title" > {this.props.title} </div>
     );
   }
 }
