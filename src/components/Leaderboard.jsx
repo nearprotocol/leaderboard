@@ -1,5 +1,7 @@
 import React from 'react';
 import Card from './Card';
+import fire from '../fire';
+
 const DATA = {
   title: 'Leaderboard',
   people: [
@@ -42,20 +44,37 @@ let peeps = [...Array(20).keys()].map(x=> {
 })
 // console.log(peeps);
 
-DATA.people = DATA.people.concat(peeps);
-console.log(DATA)
+// DATA.people = DATA.people.concat(peeps);
+// console.log(DATA)
 
 export default class Leaderboard extends React.Component {
   constructor () {
-    super();
+    super(); 
+  }
+  componentWillMount(){
+    this.setState(DATA);
     
+    let usersRef = fire.database().ref('users').orderByKey();
+    usersRef.on('value', snapshot => {
+      let newPeople = [];
+      let peeps = snapshot.val()
+      for (let i=0;i<peeps.length; i++) {
+        newPeople.push({
+          name: peeps[i].name,
+          image: peeps[i].image,
+          score: peeps[i].score
+        })
+      }
+      this.setState({
+        people: newPeople
+      });
+    });
   }
   render () {
-    this.state = DATA;
     return (
       <div className="CardContainer">
         <Card cardTitle={this.state.title}>
-          <List people = {this.state.people}/> 
+          <List people={this.state.people}/> 
         </Card>
       </div>
     );
