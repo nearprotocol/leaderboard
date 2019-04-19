@@ -16,5 +16,3 @@ TODO:
 - Get firebase to work...
 - Add users and auth
 - Add Admin dash for adding points
-
-

@@ -53,12 +53,14 @@ export default class Leaderboard extends React.Component {
   }
   componentWillMount(){
     this.setState(DATA);
-    
-    let usersRef = fire.database().ref('users').orderByKey();
-    usersRef.on('value', snapshot => {
-      let newPeople = [];
-      let peeps = snapshot.val()
-      for (let i=0;i<peeps.length; i++) {
+
+    // let usersRef = fire.database().ref('users').orderByKey();
+  
+    let ref = fire.database().ref("users");
+    ref.once("value").then(dataSnapshot => {
+      let peeps = dataSnapshot.val()["users"];
+      //once the data is back, set the loading to false so it can be rendered
+      for (let i = 0; i < peeps.length; i++) {
         newPeople.push({
           name: peeps[i].name,
           image: peeps[i].image,
@@ -66,9 +68,25 @@ export default class Leaderboard extends React.Component {
         })
       }
       this.setState({
-        people: newPeople
+        people: newPeople,
+        loading: false
       });
     });
+
+    // usersRef.on('value', snapshot => {
+    //   let newPeople = [];
+    //   let peeps = snapshot.val()
+    //   for (let i=0;i<peeps.length; i++) {
+    //     newPeople.push({
+    //       name: peeps[i].name,
+    //       image: peeps[i].image,
+    //       score: peeps[i].score
+    //     })
+    //   }
+    //   this.setState({
+    //     people: newPeople
+    //   });
+    // });
   }
   render () {
     return (

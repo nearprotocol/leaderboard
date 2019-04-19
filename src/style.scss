@@ -14,7 +14,7 @@ body {
 
 * {
   font-family: 'Source Sans Pro','Roboto Mono',monospace;
-  font-size: calc(12px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
+  font-size: 14px;//calc(12px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
 }
 
 .app-container,
