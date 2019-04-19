@@ -10,6 +10,7 @@ export default class SignUp extends React.Component {
       email: "",
       password: "",
       passwordConf: "",
+      name:"",
       newSignUp: true
     };
     this.handleChange = this.handleChange.bind(this);
@@ -36,13 +37,10 @@ export default class SignUp extends React.Component {
       fire.auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(res => {
-
-        // HANDLE redirect
-        this.handleSuccess(res);
+        let user = res.user;
+        this.writeUserData(user.uid, this.state.name, this.state.email)
       })
       .catch(error => {
-        // Handle Errors here.
-        // var errorCode = error.code;
         var errorMessage = error.message;
         alert(errorMessage);
       });
@@ -53,15 +51,22 @@ export default class SignUp extends React.Component {
         this.handleSuccess(res);
       })  
       .catch(function (error) {
-        // Handle Errors here.
-        var errorCode = error.code;
         var errorMessage = error.message;
         alert(errorMessage);
       });
     }
   }
 
-  handleSuccess(user) {
+  writeUserData(userId, name, email) {
+    fire.database().ref('users/' + userId).set({
+      name: name,
+      email: email
+    }).then(res => {
+      this.handleSuccess(res);
+    });
+  }
+
+  handleSuccess(res) {
     this.props.history.push('/profile');
   }
 
@@ -87,6 +92,14 @@ export default class SignUp extends React.Component {
       return (
         <Card cardTitle={this.signUpOrInText()}>
           <form className="form" onSubmit={this.handleSubmit}>
+            
+            { this.state.newSignUp ? 
+              <div className="form-group">
+                <div>  
+                  <input id="name" type="text" placeholder="name" onChange={this.handleChange} value={this.state.name} />
+                </div>
+              </div>
+            : ""}
             <div className="form-group">
               <input id="email" type="text" placeholder="email" onChange={this.handleChange} value={this.state.email}/>
             </div>
@@ -94,9 +107,10 @@ export default class SignUp extends React.Component {
               <input id="password" type="password" placeholder="password" onChange={this.handleChange} value={this.state.password}/>
             </div>
             { this.state.newSignUp ? 
-              <div className="form-group">
-                <input id="passwordConf" type="password" placeholder="you know the drill" onChange={this.handleChange} value={this.state.passwordConf}/>
-              </div>
+                <div className="form-group">
+                  <input id="passwordConf" type="password" placeholder="you know the drill" onChange={this.handleChange} value={this.state.passwordConf}/>
+                </div>
+
             : ""}
             <button
               disabled={!this.validateForm()}

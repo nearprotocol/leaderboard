@@ -55,16 +55,18 @@ export default class Leaderboard extends React.Component {
     this.setState(DATA);
 
     // let usersRef = fire.database().ref('users').orderByKey();
-  
-    let ref = fire.database().ref("users");
-    ref.once("value").then(dataSnapshot => {
-      let peeps = dataSnapshot.val()["users"];
-      //once the data is back, set the loading to false so it can be rendered
-      for (let i = 0; i < peeps.length; i++) {
+    let db = fire.database()
+    let ref = db.ref("users");
+    ref.on('value', dataSnapshot => {
+      console.log(dataSnapshot.val())
+      let newPeople = [];
+      let peeps = dataSnapshot.val()
+      let k = Object.keys(peeps);
+      for (let i = 0; i < k.length; i++) {
         newPeople.push({
-          name: peeps[i].name,
-          image: peeps[i].image,
-          score: peeps[i].score
+          name: peeps[k[i]].name,
+          image: peeps[k[i]].image,
+          score: peeps[k[i]].score
         })
       }
       this.setState({

@@ -1,5 +1,8 @@
 import React from 'react';
-import { Link, withRouter } from "react-router-dom";
+import { Route, Link, withRouter } from "react-router-dom";
+import Leaderboard from './Leaderboard';
+import Profile from './Profile';
+import SignUp from './SignUp';
 import fire from '../fire';
 
 class Nav extends React.Component {
@@ -35,11 +38,6 @@ class Nav extends React.Component {
     });
   }
 
-  componentWillMount() {
-    // console.log(this.state.user);
-    // console.log(fire.auth().currentUser)
-  }
-
   signOut(e) {
     e.preventDefault();
     fire.auth().signOut()
@@ -53,30 +51,37 @@ class Nav extends React.Component {
 
   render() {
     return (
-      <nav className="Nav" >
-        <ul>
-          <li>
-            <Link to="/">
-              <img src="https://nearprotocol.com/wp-content/themes/near-19/assets/img/logo.svg?t=1553011311" alt=""/>
-            </Link>
-            hack ONE
-          </li>
-          { this.state.user ?
-            <React.Fragment>
-              <li>
-                <Link to="/profile">Profile</Link>
-              </li>
-              <li>
-                <a href="#" onClick={this.signOut}>Sign Out</a>
-              </li>
-            </React.Fragment>
-            :
-          <li>
-            <Link to="/sign-up">Sign Up</Link>
-          </li>
-          }
-        </ul>  
-      </nav>
+      <React.Fragment>
+        <nav className="Nav" >
+          <ul>
+            <li>
+              <Link to="/">
+                <img src="https://nearprotocol.com/wp-content/themes/near-19/assets/img/logo.svg?t=1553011311" alt=""/>
+              </Link>
+              hack ONE
+            </li>
+            { this.state.user ?
+              <React.Fragment>
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+                <li>
+                  <a href="#" onClick={this.signOut}>Sign Out</a>
+                </li>
+              </React.Fragment>
+              :
+            <li>
+              <Link to="/sign-up">Sign Up</Link>
+            </li>
+            }
+          </ul>  
+        </nav>
+
+        <Route exact path="/" component={Leaderboard} />
+        <Route exact path="/home" component={Leaderboard} />
+        <Route exact path="/sign-up" component={SignUp} />
+        <Route path="/profile" component={() => <Profile user={this.state.user} />} />
+      </React.Fragment>
     );
   }
 }
