@@ -2,8 +2,9 @@ import React from 'react';
 import Card from './Card';
 import ProfileTag from './ProfileTag';
 import fire from '../fire';
+import { withRouter } from "react-router-dom";
 
-export default class Profile extends React.Component {
+class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,10 +12,10 @@ export default class Profile extends React.Component {
       profile: {}
     }
   }
+
   componentDidMount() {
     let db = fire.database()
     let user = this.state.user;
-
     if (user) {
       let ref = db.ref("users/" + user.uid);
       ref.on('value', dataSnapshot => {
@@ -22,8 +23,10 @@ export default class Profile extends React.Component {
         this.setState({
           profile: {
             name: prof.name,
+            image: prof.image,
             email: prof.email,
-            team: "Berry Club"
+            team: prof.team,
+            score: prof.score
           }
         })
       });  
@@ -32,18 +35,21 @@ export default class Profile extends React.Component {
   }
   render() {
     return(
-        <Card cardTitle="Profile">
-            <ul>
-              <li>
-                <ProfileTag name={this.state.profile.name} image="Image" />
-              </li>
-              <li>team: {this.state.profile.team}</li>
-              <li>
-                {this.state.profile.email}
-              </li>
-              <li>Score: TBA</li>
-            </ul>
-        </Card>
+      <Card cardTitle="Profile">
+          <ul>
+            <li>
+              <ProfileTag name={this.state.profile.name} image={this.state.profile.image} />
+            </li>
+          { this.state.profile.team ?
+            <li>team: {this.state.profile.team}</li>
+            : ""}
+            <li>
+              {this.state.profile.email}
+            </li>
+          <li>Score: {this.state.profile.score}</li>
+          </ul>
+      </Card>
     );
   }
 }
+export default withRouter(Profile);

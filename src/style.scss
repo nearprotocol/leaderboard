@@ -40,12 +40,55 @@ body {
   }
 }
 
+.form {
+  .form-group {
+    margin: 10px 20px;
+    input {
+      padding: 6px;
+    }
+    .form-button {
+      outline: none;
+      padding: 4px;
+      border: 0;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-left: 20px;
+      padding-right: 20px;
+      border-radius: 9999px;
+      font-weight: 900;
+      background-color: #ff585d;
+      color: #fff;
+      text-align: center;
+      transition: .2s;
+      text-transform: uppercase;
+      &:hover {
+        transform: scale(1.05);
+      }
+      &:disabled {
+        background-color: gray;
+        &:hover {
+          transform: scale(1);
+        }
+      }
+    }
+    .spacer {
+      margin: 0 10px;
+      vertical-align: center;
+    }
+  }
+}
+
 .CardContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   width: 100%;
+}
+
+.ProfileTag {
+  display: flex;
+  align-items: center;
 }
 
 .Card {
@@ -71,6 +114,14 @@ body {
     max-height: 53vh;
   }
 
+  .Image {
+    height: 44px;
+    width: 44px;
+    background: orange;
+    border-radius: 44px;
+    transform: scale(.9);
+  }
+
   .Person {
     align-items: center;
     background-size: cover;
@@ -87,14 +138,6 @@ body {
 
     &:last-child {
       margin-bottom: 0;
-    }
-
-    .Image {
-      height: 44px;
-      width: 44px;
-      background: orange;
-      border-radius: 44px;
-      transform: scale(.9);
     }
 
     .Name {

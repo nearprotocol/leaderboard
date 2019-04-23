@@ -6,6 +6,7 @@ const DATA = {
   title: 'Leaderboard',
   people: [
     {
+      key: 1,
       name: 'Bad Boi Vlad',
       image: 'http://lorempixel.com/120/120',
       score: 20051
@@ -25,7 +26,7 @@ const lastNames = [
   " Dave",
   " The Dream",
   " The Train",
-  " The What the fucccccccsa",
+  " What The...",
   ".sh"
 ]
 
@@ -57,16 +58,18 @@ export default class Leaderboard extends React.Component {
     // let usersRef = fire.database().ref('users').orderByKey();
     let db = fire.database()
     let ref = db.ref("users");
+
     ref.on('value', dataSnapshot => {
       console.log(dataSnapshot.val())
       let newPeople = [];
       let peeps = dataSnapshot.val()
-      let k = Object.keys(peeps);
-      for (let i = 0; i < k.length; i++) {
+      let keys = Object.keys(peeps);
+      for (let i = 0; i < keys.length; i++) {
         newPeople.push({
-          name: peeps[k[i]].name,
-          image: peeps[k[i]].image,
-          score: peeps[k[i]].score
+          key: keys[i],
+          name: peeps[keys[i]].name,
+          image: peeps[keys[i]].image,
+          score: peeps[keys[i]].score
         })
       }
       this.setState({
@@ -74,21 +77,6 @@ export default class Leaderboard extends React.Component {
         loading: false
       });
     });
-
-    // usersRef.on('value', snapshot => {
-    //   let newPeople = [];
-    //   let peeps = snapshot.val()
-    //   for (let i=0;i<peeps.length; i++) {
-    //     newPeople.push({
-    //       name: peeps[i].name,
-    //       image: peeps[i].image,
-    //       score: peeps[i].score
-    //     })
-    //   }
-    //   this.setState({
-    //     people: newPeople
-    //   });
-    // });
   }
   render () {
     return (
@@ -116,10 +104,10 @@ class List extends React.Component {
     let peopleList = this.sortArray();
     let people = peopleList.map((person, i) => {
       return <Person 
-              key = {person.name + i}
-              name = {person.name}
-              score = {person.score}
-              image = {person.image}/>});
+                key = {person.key}
+                name = {person.name}
+                score = {person.score}
+                image = {person.image}/>});
     return ( 
       <ul> 
         {people}

@@ -57,10 +57,16 @@ export default class SignUp extends React.Component {
     }
   }
 
+  generateRandomImageLink() {
+    let x = Math.floor(Math.random()*10);
+    return `http://lorempixel.com/10${x}/10${x}`;
+  }
+
   writeUserData(userId, name, email) {
     fire.database().ref('users/' + userId).set({
       name: name,
-      email: email
+      email: email,
+      image: this.generateRandomImageLink()
     }).then(res => {
       this.handleSuccess(res);
     });
@@ -95,9 +101,7 @@ export default class SignUp extends React.Component {
             
             { this.state.newSignUp ? 
               <div className="form-group">
-                <div>  
-                  <input id="name" type="text" placeholder="name" onChange={this.handleChange} value={this.state.name} />
-                </div>
+                <input id="name" type="text" placeholder="name" onChange={this.handleChange} value={this.state.name} />
               </div>
             : ""}
             <div className="form-group">
@@ -110,16 +114,18 @@ export default class SignUp extends React.Component {
                 <div className="form-group">
                   <input id="passwordConf" type="password" placeholder="you know the drill" onChange={this.handleChange} value={this.state.passwordConf}/>
                 </div>
-
             : ""}
-            <button
-              disabled={!this.validateForm()}
-              type="submit">
-              {this.signUpOrInText()}
-            </button>
-            <a href="" onClick={this.toggleSignUp}>
-              {this.existingAccountText()}
-            </a>
+            <div className="form-group">
+              <button
+                className="form-button"
+                disabled={!this.validateForm()}
+                type="submit">
+                {this.signUpOrInText()}
+              </button>
+              <a className="spacer" href="" onClick={this.toggleSignUp}>
+                {this.existingAccountText()}
+              </a>
+            </div>
           </form>
         </Card>
       );

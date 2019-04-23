@@ -3,21 +3,7 @@
   "rules": {
     "users": {
       ".read": true,
-      ".write":true
-            // "$user_id": {
-            //   "name": {
-            //     ".write": true
-            //   },
-            //   "email": {
-            //     ".write": true
-            //   },
-            //   "image": {
-            //     ".write": true
-            //   },
-            //   "score": {
-            //     ".write": "root.child('users/'+auth.uid+'/role').val() == 'admin'"
-            //   }
-            // }
+      ".write": "auth != null"
     }
   }
 }

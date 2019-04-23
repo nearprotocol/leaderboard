@@ -61,14 +61,17 @@ class Nav extends React.Component {
               hack ONE
             </li>
             { this.state.user ?
-              <React.Fragment>
+              <ul>
+                <li>
+                  <Link to="/">Leaderboard</Link>
+                </li>
                 <li>
                   <Link to="/profile">Profile</Link>
                 </li>
                 <li>
                   <a href="#" onClick={this.signOut}>Sign Out</a>
                 </li>
-              </React.Fragment>
+              </ul>
               :
             <li>
               <Link to="/sign-up">Sign Up</Link>
