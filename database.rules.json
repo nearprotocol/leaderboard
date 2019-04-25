@@ -4,6 +4,10 @@
     "users": {
       ".read": true,
       ".write": "auth != null"
+    },
+    "teams": {
+      ".read": true,
+      ".write": "auth != null"
     }
   }
 }

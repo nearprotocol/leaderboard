@@ -2,20 +2,26 @@ import React from "react";
 import fire from '../fire';
 import Card from './Card';
 import { Redirect } from 'react-router';
+import Select from 'react-select';
+import {countries} from '../utils/countries';
 
 export default class SignUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       email: "",
+      country: "",
       password: "",
       passwordConf: "",
       name:"",
-      newSignUp: true
+      newSignUp: true,
+      countries: countries
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleSignUp = this.toggleSignUp.bind(this);
+
   }
 
   validateForm() {
@@ -31,6 +37,12 @@ export default class SignUp extends React.Component {
     });
   }
 
+  handleSelect(value) {
+    this.setState({
+      country: value
+    });
+  }
+
   handleSubmit(event) {
     event.preventDefault();
     if (this.state.newSignUp){
@@ -38,7 +50,7 @@ export default class SignUp extends React.Component {
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(res => {
         let user = res.user;
-        this.writeUserData(user.uid, this.state.name, this.state.email)
+        this.writeUserData(user.uid, this.state.name, this.state.email, this.state.country)
       })
       .catch(error => {
         var errorMessage = error.message;
@@ -62,11 +74,12 @@ export default class SignUp extends React.Component {
     return `http://lorempixel.com/10${x}/10${x}`;
   }
 
-  writeUserData(userId, name, email) {
+  writeUserData(userId, name, email, country) {
     fire.database().ref('users/' + userId).set({
       name: name,
       email: email,
-      image: this.generateRandomImageLink()
+      image: this.generateRandomImageLink(),
+      country: country
     }).then(res => {
       this.handleSuccess(res);
     });
@@ -98,11 +111,20 @@ export default class SignUp extends React.Component {
       return (
         <Card cardTitle={this.signUpOrInText()}>
           <form className="form" onSubmit={this.handleSubmit}>
-            
-            { this.state.newSignUp ? 
+            { this.state.newSignUp ?
+            <React.Fragment>
               <div className="form-group">
                 <input id="name" type="text" placeholder="name" onChange={this.handleChange} value={this.state.name} />
               </div>
+              <div className="form-group">
+                <Select
+                  isSearchable={true}
+                  value={ this.state.country }
+                  placeholder="country"
+                  onChange={ this.handleSelect }
+                  options={ this.state.countries } />
+              </div>
+            </React.Fragment>
             : ""}
             <div className="form-group">
               <input id="email" type="text" placeholder="email" onChange={this.handleChange} value={this.state.email}/>
@@ -111,16 +133,16 @@ export default class SignUp extends React.Component {
               <input id="password" type="password" placeholder="password" onChange={this.handleChange} value={this.state.password}/>
             </div>
             { this.state.newSignUp ? 
-                <div className="form-group">
-                  <input id="passwordConf" type="password" placeholder="you know the drill" onChange={this.handleChange} value={this.state.passwordConf}/>
-                </div>
+              <div className="form-group">
+                <input id="passwordConf" type="password" placeholder="you know the drill" onChange={this.handleChange} value={this.state.passwordConf}/>
+              </div>
             : ""}
             <div className="form-group">
               <button
                 className="form-button"
                 disabled={!this.validateForm()}
                 type="submit">
-                {this.signUpOrInText()}
+                { this.signUpOrInText() }
               </button>
               <a className="spacer" href="" onClick={this.toggleSignUp}>
                 {this.existingAccountText()}
@@ -132,3 +154,22 @@ export default class SignUp extends React.Component {
     }
   }
 }
+
+// class SelectList extends React.Component {
+//   constructor() {
+//     super();
+//     this.state = {
+//       optionValue: ""
+//     }
+//   }
+//   render() {
+//     let options = this.props.options.map((option, i) => {
+//       return <option value={option.value}>{option.text}</option>;
+//     });
+//     return (
+//       <select value={this.state.optionValue} onChange={this.props.callback} >
+//         { options }
+//       </select>
+//     );
+//   }
+// }

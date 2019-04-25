@@ -43,10 +43,6 @@ let peeps = [...Array(20).keys()].map(x=> {
     score: Math.floor(Math.random() * 10000)
   }
 })
-// console.log(peeps);
-
-// DATA.people = DATA.people.concat(peeps);
-// console.log(DATA)
 
 export default class Leaderboard extends React.Component {
   constructor () {
@@ -57,8 +53,7 @@ export default class Leaderboard extends React.Component {
 
     // let usersRef = fire.database().ref('users').orderByKey();
     let db = fire.database()
-    let ref = db.ref("users");
-
+    let ref = db.ref("teams");
     ref.on('value', dataSnapshot => {
       console.log(dataSnapshot.val())
       let newPeople = [];
@@ -72,6 +67,7 @@ export default class Leaderboard extends React.Component {
           score: peeps[keys[i]].score
         })
       }
+
       this.setState({
         people: newPeople,
         loading: false
@@ -82,7 +78,7 @@ export default class Leaderboard extends React.Component {
     return (
       <div className="CardContainer">
         <Card cardTitle={this.state.title}>
-          <List people={this.state.people}/> 
+          <List items={this.state.people}/> 
         </Card>
       </div>
     );
@@ -90,36 +86,42 @@ export default class Leaderboard extends React.Component {
 }
 
 class List extends React.Component {
-  compareArray(a, b) {
-    if (a.score < b.score)
+  compareArray(_a, _b) {
+    let a=_a.score;
+    let b=_b.score;
+    if (a < b || a == null)
       return 1;
-    if (a.score > b.score)
+    if (a > b)
       return -1;
     return 0;
   }
   sortArray() {
-    return this.props.people.sort(this.compareArray);
+    return this.props.items.sort(this.compareArray);
   }
+
+  componentDidUpdate() {
+  }
+
   render() {
-    let peopleList = this.sortArray();
-    let people = peopleList.map((person, i) => {
-      return <Person 
-                key = {person.key}
-                name = {person.name}
-                score = {person.score}
-                image = {person.image}/>});
-    return ( 
+    let sortedItems = this.sortArray();
+    let items = sortedItems.map((item, i) => {
+      return <Item
+                key = {item.key}
+                name = {item.name}
+                score = {item.score}
+                image = {item.image}/>});
+    return (
       <ul> 
-        {people}
+        {items}
       </ul>
     );
   }
 }
 
-class Person extends React.Component {
+class Item extends React.Component {
   render () {
     return ( 
-      <li className = "Person" >
+      <li className = "Item" >
         <div className = "Image"
           style = {{ backgroundImage: 'url(' + this.props.image + ')'}} > </div> 
         <div className = "Name" > {this.props.name} </div> 

@@ -14,6 +14,7 @@ class Profile extends React.Component {
   }
 
   componentDidMount() {
+    
     let db = fire.database()
     let user = this.state.user;
     if (user) {
