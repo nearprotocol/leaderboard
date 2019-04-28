@@ -51,7 +51,21 @@ export default class SignUp extends React.Component {
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(res => {
         let user = res.user;
-        this.writeUserData(user.uid, this.state.name, this.state.email, this.state.country, this.state.team)
+
+        // TODO: refactor into obj
+        this.writeUserData(
+          user.uid,
+          this.state.name,
+          this.state.email,
+          this.state.country,
+          this.state.team);
+
+        user.sendEmailVerification()
+        .then(function () {
+          // Email sent. Don't trip dog.
+        }).catch(function (error) {
+          console.log(error)
+        });
       })
       .catch(error => {
         var errorMessage = error.message;
@@ -117,10 +131,10 @@ export default class SignUp extends React.Component {
             { this.state.newSignUp ?
             <React.Fragment>
               <div className="form-group">
-                <input id="name" type="text" placeholder="name" onChange={this.handleChange} value={this.state.name} />
+                  <input id="name" type="text" placeholder="leader name" onChange={this.handleChange} value={this.state.name} required />
               </div>
               <div className="form-group">
-                <input id="team" type="text" placeholder="team" onChange={this.handleChange} value={this.state.team} />
+                <input id="team" type="text" placeholder="team name" onChange={this.handleChange} value={this.state.team} required />
               </div>
               <div className="form-group">
                 <Select
@@ -128,7 +142,8 @@ export default class SignUp extends React.Component {
                   value={ this.state.country }
                   placeholder="country"
                   onChange={ this.handleSelect }
-                  options={ this.state.countries } />
+                  options={ this.state.countries } 
+                  required />
               </div>
             </React.Fragment>
             : ""}
