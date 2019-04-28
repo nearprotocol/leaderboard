@@ -15,7 +15,8 @@ export default class SignUp extends React.Component {
       passwordConf: "",
       name:"",
       newSignUp: true,
-      countries: countries
+      countries: countries,
+      team: ""
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
@@ -50,7 +51,7 @@ export default class SignUp extends React.Component {
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(res => {
         let user = res.user;
-        this.writeUserData(user.uid, this.state.name, this.state.email, this.state.country)
+        this.writeUserData(user.uid, this.state.name, this.state.email, this.state.country, this.state.team)
       })
       .catch(error => {
         var errorMessage = error.message;
@@ -74,12 +75,14 @@ export default class SignUp extends React.Component {
     return `http://lorempixel.com/10${x}/10${x}`;
   }
 
-  writeUserData(userId, name, email, country) {
+  writeUserData(userId, name, email, country, team) {
     fire.database().ref('users/' + userId).set({
       name: name,
       email: email,
       image: this.generateRandomImageLink(),
-      country: country
+      country: country,
+      team: team,
+      score: 100
     }).then(res => {
       this.handleSuccess(res);
     });
@@ -117,6 +120,9 @@ export default class SignUp extends React.Component {
                 <input id="name" type="text" placeholder="name" onChange={this.handleChange} value={this.state.name} />
               </div>
               <div className="form-group">
+                <input id="team" type="text" placeholder="team" onChange={this.handleChange} value={this.state.team} />
+              </div>
+              <div className="form-group">
                 <Select
                   isSearchable={true}
                   value={ this.state.country }
@@ -134,7 +140,7 @@ export default class SignUp extends React.Component {
             </div>
             { this.state.newSignUp ? 
               <div className="form-group">
-                <input id="passwordConf" type="password" placeholder="you know the drill" onChange={this.handleChange} value={this.state.passwordConf}/>
+                <input id="passwordConf" type="password" placeholder="confirm password" onChange={this.handleChange} value={this.state.passwordConf}/>
               </div>
             : ""}
             <div className="form-group">
