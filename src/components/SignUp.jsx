@@ -73,6 +73,11 @@ export default class SignUp extends React.Component {
           this.state.country,
           this.state.team);
 
+        this.writeTeamData(
+          user.uid,
+          this.state.team
+        )
+
         user.sendEmailVerification()
         .then(function () {
           // Email sent. Don't trip dog.
@@ -110,6 +115,17 @@ export default class SignUp extends React.Component {
       country: country,
       team: team,
       score: 100
+    }).then(res => {
+      this.handleSuccess(res);
+    });
+  }
+
+  writeTeamData(userId, teamName) {
+    fire.database().ref('teams/').push({
+      name: teamName,
+      image: this.generateRandomImageLink(),
+      score: 100,
+      leaderId: userId
     }).then(res => {
       this.handleSuccess(res);
     });
