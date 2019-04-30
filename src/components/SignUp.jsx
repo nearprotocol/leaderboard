@@ -10,10 +10,13 @@ export default class SignUp extends React.Component {
     super(props);
     this.state = {
       email: "",
-      country: "",
+      country: {
+        value: "",
+        label: ""
+      },
       password: "",
       passwordConf: "",
-      name:"",
+      name: "",
       newSignUp: true,
       countries: countries,
       team: ""
@@ -25,11 +28,21 @@ export default class SignUp extends React.Component {
 
   }
 
+  // TODO: This is bad and I feel bad for writing it
   validateForm() {
-    if (this.state.newSignUp && (this.state.password !== this.state.passwordConf)) {
-      return false;
-    }
-    return this.state.email.length > 0 && this.state.password.length > 6;
+    let newSignup = this.state.newSignUp;
+    let enteredPassword = this.state.password.length > 6;
+    let confirmedPassword = (this.state.password === this.state.passwordConf);
+    let selectedCountry = this.state.country.value.length > 0;
+    let selectedTeam = this.state.team.length > 0;
+    let enteredEmail = this.state.email.length > 0;
+
+    return newSignup
+        && enteredPassword
+        && confirmedPassword
+        && selectedCountry
+        && selectedTeam
+        && enteredEmail
   }
 
   handleChange(event) {
