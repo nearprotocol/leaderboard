@@ -63,6 +63,7 @@ export default class Leaderboard extends React.Component {
         newPeople.push({
           key: keys[i],
           name: peeps[keys[i]].name,
+          demo: peeps[keys[i]].demo,
           image: peeps[keys[i]].image,
           score: peeps[keys[i]].score
         })
@@ -108,6 +109,7 @@ class List extends React.Component {
       return <Item
                 key = {item.key}
                 name = {item.name}
+                demo = {item.demo}
                 score = {item.score}
                 image = {item.image}/>});
     return (
@@ -125,6 +127,7 @@ class Item extends React.Component {
         <div className = "Image"
           style = {{ backgroundImage: 'url(' + this.props.image + ')'}} > </div> 
         <div className = "Name" > {this.props.name} </div> 
+        <a className="Demo" href={this.props.demo}> demo or github</a>
         <div className = "Score" > {this.props.score} </div> 
       </li>
     );
